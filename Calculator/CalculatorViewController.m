@@ -73,7 +73,13 @@
 - (IBAction)decimalPressed 
 {
     if (self.userIsInMiddleOfEntringNumber) 
+    {
+        NSRange  rangeOfDecimal = [self.display.text rangeOfString:@"."] ;
+        if ( rangeOfDecimal.location == NSNotFound )
+        {
         self.display.text = [self.display.text stringByAppendingString:@"."] ;
+        }
+    }
     else 
     {
         self.display.text = [NSString stringWithFormat:@"0."] ; 
