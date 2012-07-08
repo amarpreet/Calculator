@@ -67,6 +67,9 @@
     {
         double divisor = [self popOperand] ; 
         if(divisor) result = [self popOperand] / divisor ; 
+    }else if ([operation isEqualToString:@"+/-"])
+    {   
+        result = [self popOperand] * - 1 ;
     }
     
     [self pushOperand:result]; // push the operand back on to the stack 

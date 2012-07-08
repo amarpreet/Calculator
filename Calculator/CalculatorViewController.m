@@ -126,6 +126,19 @@
     NSLog(@"operand stack right now : %@" , self.brain); 
 
 }
+- (IBAction)invertSign:(UIButton *)sender
+{
+    if (self.userIsInMiddleOfEntringNumber)
+    {
+        double result = [self.display.text doubleValue] * -1 ; 
+        self.display.text = [NSString stringWithFormat:@"%g", result];
+    }
+    else
+    {
+        [self operationPressed:sender];
+    
+    }
+}
 
 - (IBAction)clear 
 {
