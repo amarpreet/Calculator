@@ -30,9 +30,8 @@
     {
         self.display.text = sender.currentTitle ; 
         self.userIsInMiddleOfEntringNumber = YES ;
-
     }
-    
+    NSLog(@"user touched %@" , sender.currentTitle);
     
 }
 
