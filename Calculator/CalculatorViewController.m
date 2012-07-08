@@ -10,25 +10,36 @@
 
 @interface CalculatorViewController ()
 
+@property (nonatomic) BOOL userIsInMiddleOfEntringNumber ; 
+
 @end
 
 @implementation CalculatorViewController
 
-- (void)viewDidLoad
+@synthesize display;
+@synthesize userIsInMiddleOfEntringNumber = _userIsInMiddleOfEntringNumber ;
+
+
+- (IBAction)digitPressed:(UIButton *)sender 
 {
-    [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    if (self.userIsInMiddleOfEntringNumber) 
+    {
+        self.display.text = [self.display.text stringByAppendingString:sender.currentTitle]; 
+    }
+    else 
+    {
+        self.display.text = sender.currentTitle ; 
+        self.userIsInMiddleOfEntringNumber = YES ;
+
+    }
+    
+    
 }
 
-- (void)viewDidUnload
+
+- (void)viewDidUnload 
 {
+    [self setDisplay:nil];
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
 }
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}
-
 @end
