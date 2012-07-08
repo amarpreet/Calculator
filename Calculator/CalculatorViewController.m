@@ -35,6 +35,17 @@
     
 }
 
+- (IBAction)enterPressed 
+{
+    
+    NSLog(@"user touched enter"); 
+}
+
+- (IBAction)operationPressed:(UIButton *)sender 
+{
+    NSLog(@"user touched operation %@" , sender.currentTitle);
+}
+
 
 - (void)viewDidUnload 
 {
