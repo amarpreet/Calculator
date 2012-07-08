@@ -32,10 +32,43 @@
     NSNumber * operandObject = [NSNumber numberWithDouble:operand]; 
     [self.operandStack addObject:operandObject]; 
 }
+
+
+- (double)popOperand 
+{
+    NSNumber * operandObject = [self.operandStack lastObject] ; 
+    if (operandObject) [self.operandStack removeLastObject]; 
+    
+    return [operandObject doubleValue]; 
+}
+
+
 - (double)performOperation:(NSString *)operation 
 {
     double result = 0; 
-    // code to perfrom the requested operations and return the result ; 
+    if ([operation isEqualToString:@"+"]) 
+        result = [self popOperand] + [self popOperand] ;
+    else if ([operation isEqualToString:@"*"]) 
+        result = [self popOperand] * [self popOperand ] ; 
+    else if ([operation isEqualToString:@"sin"])
+        result = sin([self popOperand]); 
+    else if ([operation isEqualToString:@"cos"])   
+        result = cos([self popOperand]);
+    else if ([operation isEqualToString:@"π"])     
+        result = M_PI ;
+    else if ([operation isEqualToString:@"sqrt"])
+        result = sqrt([self popOperand]) ;
+    else if ( [operation isEqualToString:@"-"])    
+    {
+        double digit = [self popOperand] ; 
+        result = [self popOperand] - digit ;
+    }
+    else if ([operation isEqualToString:@"/"])     
+    {
+        double divisor = [self popOperand] ; 
+        if(divisor) result = [self popOperand] / divisor ; 
+    }
+    
     return  result ; 
 }
 @end
