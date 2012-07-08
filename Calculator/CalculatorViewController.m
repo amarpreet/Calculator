@@ -53,6 +53,19 @@
 
 - (void)updateSentToBrainLabelwith:(NSString *)aString 
 {
+    
+    NSRange  rangeOfEquals = [self.sentToBrain.text rangeOfString:@" = "] ;
+    if ( rangeOfEquals.location != NSNotFound )
+    {
+        NSUInteger lengthOfStringInDisplay  = [self.sentToBrain.text  length];
+        NSRange rangeOfStringToDelete ; 
+        rangeOfStringToDelete.location = lengthOfStringInDisplay - 3 ; 
+        rangeOfStringToDelete.length = 3 ; 
+        NSMutableString * newDisplay = [self.sentToBrain.text mutableCopy];
+        [newDisplay deleteCharactersInRange:rangeOfStringToDelete]; 
+        self.sentToBrain.text = newDisplay ;
+        
+    }
     self.sentToBrain.text = [self.sentToBrain.text stringByAppendingFormat:@" %@ " , aString];
 }
 
@@ -106,6 +119,7 @@
     }
     NSString * operation = sender.currentTitle ; 
     [self updateSentToBrainLabelwith:operation]; 
+    [self updateSentToBrainLabelwith:@"="];
     double result = [self.brain performOperation:operation];
     self.display.text = [NSString stringWithFormat:@"%g" , result ]; 
     NSLog(@"user touched operation %@" , sender.currentTitle);
