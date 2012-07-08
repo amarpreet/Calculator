@@ -7,10 +7,12 @@
 //
 
 #import "CalculatorViewController.h"
+#import "CalculatorBrain.h"
 
 @interface CalculatorViewController ()
 
-@property (nonatomic) BOOL userIsInMiddleOfEntringNumber ; 
+@property (nonatomic) BOOL userIsInMiddleOfEntringNumber ;
+@property (nonatomic, strong ) CalculatorBrain * brain ; 
 
 @end
 
@@ -18,7 +20,14 @@
 
 @synthesize display;
 @synthesize userIsInMiddleOfEntringNumber = _userIsInMiddleOfEntringNumber ;
+@synthesize brain = _brain ; 
 
+- (CalculatorBrain *)brain 
+{
+    if (!_brain) _brain = [[CalculatorBrain alloc] init]; 
+    
+    return _brain ; 
+}
 
 - (IBAction)digitPressed:(UIButton *)sender 
 {
