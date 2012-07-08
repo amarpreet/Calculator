@@ -28,7 +28,9 @@
 
 - (void)pushOperand:(double)operand 
 {
-    // code to push and operand onto the stack 
+    // using the NSNumber as a wraper for double so we use the result in "object" to store in an NSArray
+    NSNumber * operandObject = [NSNumber numberWithDouble:operand]; 
+    [self.operandStack addObject:operandObject]; 
 }
 - (double)performOperation:(NSString *)operation 
 {
