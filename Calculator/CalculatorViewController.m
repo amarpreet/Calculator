@@ -43,6 +43,17 @@
     NSLog(@"user touched %@" , sender.currentTitle);
     
 }
+- (IBAction)decimalPressed 
+{
+    if (self.userIsInMiddleOfEntringNumber) 
+        self.display.text = [self.display.text stringByAppendingString:@"."] ;
+    else 
+    {
+        self.display.text = [NSString stringWithFormat:@"0."] ; 
+        self.userIsInMiddleOfEntringNumber = YES ;
+    }
+
+}
 
 - (IBAction)enterPressed 
 {
