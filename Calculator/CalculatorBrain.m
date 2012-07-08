@@ -46,7 +46,43 @@
 + (double)popOperandOffProgramStack:(NSMutableArray *)stack 
 {
     double result = 0 ; 
-    //code of calcuation of operations or simply returning the top operand from stack
+    
+    id topOfStack = [stack lastObject];
+    if (topOfStack) [stack removeLastObject];
+    
+    if ([topOfStack isKindOfClass:[NSNumber class]])
+    {
+        result = [topOfStack doubleValue];
+    }
+    else if ([topOfStack isKindOfClass:[NSString class]])
+    {
+        NSString *operation = topOfStack;
+        if ([operation isEqualToString:@"+"]) 
+            result = [self popOperandOffProgramStack:stack] + [self popOperandOffProgramStack:stack] ;
+        else if ([operation isEqualToString:@"*"]) 
+            result = [self popOperandOffProgramStack:stack] * [self popOperandOffProgramStack:stack ] ; 
+        else if ([operation isEqualToString:@"sin"])
+            result = sin([self popOperandOffProgramStack:stack]); 
+        else if ([operation isEqualToString:@"cos"])   
+            result = cos([self popOperandOffProgramStack:stack]);
+        else if ([operation isEqualToString:@"π"])     
+            result = M_PI ;
+        else if ([operation isEqualToString:@"sqrt"])
+            result = sqrt([self popOperandOffProgramStack:stack]) ;
+        else if ( [operation isEqualToString:@"-"])    
+        {
+            double digit = [self popOperandOffProgramStack:stack] ; 
+            result = [self popOperandOffProgramStack:stack] - digit ;
+        }
+        else if ([operation isEqualToString:@"/"])     
+        {
+            double divisor = [self popOperandOffProgramStack:stack] ; 
+            if(divisor) result = [self popOperandOffProgramStack:stack] / divisor ; 
+        }else if ([operation isEqualToString:@"+/-"])
+        {   
+            result = [self popOperandOffProgramStack:stack] * - 1 ;
+        }
+    }
     return result ;
 }
 
@@ -64,35 +100,6 @@
     [self.programStack addObject:operation]; 
     return [[self class] runProgram:self.program];
 }
-
-
-
-/*    if ([operation isEqualToString:@"+"]) 
-        result = [self popOperand] + [self popOperand] ;
-    else if ([operation isEqualToString:@"*"]) 
-        result = [self popOperand] * [self popOperand ] ; 
-    else if ([operation isEqualToString:@"sin"])
-        result = sin([self popOperand]); 
-    else if ([operation isEqualToString:@"cos"])   
-        result = cos([self popOperand]);
-    else if ([operation isEqualToString:@"π"])     
-        result = M_PI ;
-    else if ([operation isEqualToString:@"sqrt"])
-        result = sqrt([self popOperand]) ;
-    else if ( [operation isEqualToString:@"-"])    
-    {
-        double digit = [self popOperand] ; 
-        result = [self popOperand] - digit ;
-    }
-    else if ([operation isEqualToString:@"/"])     
-    {
-        double divisor = [self popOperand] ; 
-        if(divisor) result = [self popOperand] / divisor ; 
-    }else if ([operation isEqualToString:@"+/-"])
-    {   
-        result = [self popOperand] * - 1 ;
-    }
-    */
 
 
 - (NSString *)description 
