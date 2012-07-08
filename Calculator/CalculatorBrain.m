@@ -11,42 +11,63 @@
 
 @interface CalculatorBrain ()
 
-@property (nonatomic) NSMutableArray * operandStack ; 
+@property (nonatomic) NSMutableArray * programStack ; 
 
 @end 
 
 
 @implementation CalculatorBrain
 
-@synthesize operandStack = _operandStack ; 
+@synthesize programStack = _programStack ; 
 
-- (NSMutableArray *)operandStack 
+- (NSMutableArray *)programStack 
 {
-    if (!_operandStack) _operandStack = [[NSMutableArray alloc] init]; 
-    return _operandStack ;
+    if (!_programStack) _programStack = [[NSMutableArray alloc] init]; 
+    return _programStack ;
+}
+
+- (id)program
+{
+    return [self.programStack copy];
+}
+
++ (NSString *)descriptionOfProgram:(id)program
+{
+    return @"Implement this in Homework #2";
 }
 
 - (void)pushOperand:(double)operand 
 {
     // using the NSNumber as a wraper for double so we use the result in "object" to store in an NSArray
     NSNumber * operandObject = [NSNumber numberWithDouble:operand]; 
-    [self.operandStack addObject:operandObject]; 
+    [self.programStack addObject:operandObject]; 
 }
 
-
-- (double)popOperand 
++ (double)popOperandOffProgramStack:(NSMutableArray *)stack 
 {
-    NSNumber * operandObject = [self.operandStack lastObject] ; 
-    if (operandObject) [self.operandStack removeLastObject]; 
-    
-    return [operandObject doubleValue]; 
+    double result = 0 ; 
+    //code of calcuation of operations or simply returning the top operand from stack
+    return result ;
+}
+
++ (double)runProgram:(id)program
+{
+    NSMutableArray *stack;
+    if ([program isKindOfClass:[NSArray class]]) {
+        stack = [program mutableCopy];
+    }    return [self popOperandOffProgramStack:stack];
 }
 
 
 - (double)performOperation:(NSString *)operation 
 {
-    double result = 0; 
-    if ([operation isEqualToString:@"+"]) 
+    [self.programStack addObject:operation]; 
+    return [[self class] runProgram:self.program];
+}
+
+
+
+/*    if ([operation isEqualToString:@"+"]) 
         result = [self popOperand] + [self popOperand] ;
     else if ([operation isEqualToString:@"*"]) 
         result = [self popOperand] * [self popOperand ] ; 
@@ -71,19 +92,17 @@
     {   
         result = [self popOperand] * - 1 ;
     }
-    
-    [self pushOperand:result]; // push the operand back on to the stack 
-    return  result ; 
-}
+    */
+
 
 - (NSString *)description 
 {
-    return [NSString stringWithFormat:@"%@" , self.operandStack]; 
+    return [NSString stringWithFormat:@"%@" , self.programStack]; 
 }
 
 - (void)clearStack 
 {
-    [self.operandStack removeAllObjects]; 
+    [self.programStack removeAllObjects]; 
     //refreshes the stack
 }
 @end
