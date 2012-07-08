@@ -46,12 +46,19 @@
 
 - (IBAction)enterPressed 
 {
-    
-    NSLog(@"user touched enter"); 
+    [self.brain pushOperand:[self.display.text doubleValue]]; 
+    self.userIsInMiddleOfEntringNumber = NO ; 
+    NSLog(@"user touched enter on %g",[self.display.text doubleValue]); 
 }
 
 - (IBAction)operationPressed:(UIButton *)sender 
 {
+    if (self.userIsInMiddleOfEntringNumber) {
+        [self enterPressed];
+    }
+    NSString * operation = sender.currentTitle ; 
+    double result = [self.brain performOperation:operation];
+    self.display.text = [NSString stringWithFormat:@"%g" , result ]; 
     NSLog(@"user touched operation %@" , sender.currentTitle);
 }
 
