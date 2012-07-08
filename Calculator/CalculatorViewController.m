@@ -31,6 +31,26 @@
     return _brain ; 
 }
 
+- (IBAction)backpressed 
+{
+    
+    NSUInteger lengthOfStringInDisplay  = [self.display.text  length];
+    if (lengthOfStringInDisplay > 0) {
+        NSRange rangeOfStringToDelete ; 
+        rangeOfStringToDelete.location = lengthOfStringInDisplay - 1 ; 
+        rangeOfStringToDelete.length = 1 ; 
+        NSMutableString * newDisplay = [self.display.text mutableCopy];
+        [newDisplay deleteCharactersInRange:rangeOfStringToDelete]; 
+        NSUInteger lengthOfNewDisplay = [newDisplay length] ; 
+        if (lengthOfNewDisplay == 0) {
+            self.display.text = @"0" ;
+            self.userIsInMiddleOfEntringNumber = NO;
+        }else {
+            self.display.text = newDisplay ; 
+        }
+    }
+}
+
 - (void)updateSentToBrainLabelwith:(NSString *)aString 
 {
     self.sentToBrain.text = [self.sentToBrain.text stringByAppendingFormat:@" %@ " , aString];
