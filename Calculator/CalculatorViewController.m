@@ -31,6 +31,11 @@
     return _brain ; 
 }
 
+- (void)updateSentToBrainLabelwith:(NSString *)aString 
+{
+    self.sentToBrain.text = [self.sentToBrain.text stringByAppendingFormat:@" %@ " , aString];
+}
+
 - (IBAction)digitPressed:(UIButton *)sender 
 {
     if (self.userIsInMiddleOfEntringNumber) 
@@ -60,7 +65,9 @@
 - (IBAction)enterPressed 
 {
     [self.brain pushOperand:[self.display.text doubleValue]]; 
-    self.sentToBrain.text = [self.sentToBrain.text stringByAppendingFormat:@" %@ ", self.display.text]; 
+    
+    [self updateSentToBrainLabelwith:self.display.text]; 
+    
     self.userIsInMiddleOfEntringNumber = NO ; 
     NSLog(@"user touched enter on %g",[self.display.text doubleValue]);
     NSLog(@"operand stack right now : %@" , self.brain); 
@@ -72,12 +79,20 @@
         [self enterPressed];
     }
     NSString * operation = sender.currentTitle ; 
-    self.sentToBrain.text = [self.sentToBrain.text stringByAppendingFormat:@" %@ " , operation]; 
+    [self updateSentToBrainLabelwith:operation]; 
     double result = [self.brain performOperation:operation];
     self.display.text = [NSString stringWithFormat:@"%g" , result ]; 
     NSLog(@"user touched operation %@" , sender.currentTitle);
     NSLog(@"operand stack right now : %@" , self.brain); 
 
+}
+
+- (IBAction)clear 
+{
+    [self.brain clearStack]; 
+    self.sentToBrain.text = [NSString stringWithFormat:@""];
+    self.display.text = [NSString stringWithFormat:@"0"];
+    NSLog(@"everything cleared"); 
 }
 
 - (void)viewDidUnload 

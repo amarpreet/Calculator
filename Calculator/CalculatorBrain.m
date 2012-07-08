@@ -73,8 +73,14 @@
     return  result ; 
 }
 
--(NSString *)description 
+- (NSString *)description 
 {
     return [NSString stringWithFormat:@"%@" , self.operandStack]; 
+}
+
+- (void)clearStack 
+{
+    [self.operandStack removeAllObjects]; 
+    //refreshes the stack
 }
 @end
