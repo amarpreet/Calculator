@@ -13,6 +13,7 @@
 
 @property (nonatomic) BOOL userIsInMiddleOfEntringNumber ;
 @property (nonatomic, strong ) CalculatorBrain * brain ; 
+@property (weak, nonatomic) IBOutlet UILabel *sentToBrain;
 
 @end
 
@@ -21,6 +22,7 @@
 @synthesize display;
 @synthesize userIsInMiddleOfEntringNumber = _userIsInMiddleOfEntringNumber ;
 @synthesize brain = _brain ; 
+@synthesize sentToBrain = _sentToBrain;
 
 - (CalculatorBrain *)brain 
 {
@@ -58,6 +60,7 @@
 - (IBAction)enterPressed 
 {
     [self.brain pushOperand:[self.display.text doubleValue]]; 
+    self.sentToBrain.text = [self.sentToBrain.text stringByAppendingFormat:@" %@ ", self.display.text]; 
     self.userIsInMiddleOfEntringNumber = NO ; 
     NSLog(@"user touched enter on %g",[self.display.text doubleValue]);
     NSLog(@"operand stack right now : %@" , self.brain); 
@@ -69,6 +72,7 @@
         [self enterPressed];
     }
     NSString * operation = sender.currentTitle ; 
+    self.sentToBrain.text = [self.sentToBrain.text stringByAppendingFormat:@" %@ " , operation]; 
     double result = [self.brain performOperation:operation];
     self.display.text = [NSString stringWithFormat:@"%g" , result ]; 
     NSLog(@"user touched operation %@" , sender.currentTitle);
@@ -76,10 +80,10 @@
 
 }
 
-
 - (void)viewDidUnload 
 {
     [self setDisplay:nil];
+    [self setSentToBrain:nil];
     [super viewDidUnload];
 }
 @end
