@@ -43,6 +43,11 @@
     [self.programStack addObject:operandObject]; 
 }
 
+- (void)pushVariable:(NSString *) variable 
+{
+    [self.programStack addObject:variable];   
+}
+
 + (double)popOperandOffProgramStack:(NSMutableArray *)stack 
 {
     double result = 0 ; 
@@ -86,12 +91,47 @@
     return result ;
 }
 
++ (BOOL)isOperation:(NSString *)operation {
+    // Create a set of operations used
+    NSSet *setOfOperations = [NSSet setWithObjects: @"+", @"-", @"*", @"/", @"sin", 
+                           @"cos", @"sqrt", @"π", @"+/-", nil];
+    
+    return [setOfOperations containsObject:operation];
+}
+
+
++ (double)runProgram:(id)program usingVariableValues:(NSDictionary *)variableValues 
+{
+    if ([program isKindOfClass:[NSArray class]])
+    {
+        NSMutableArray *  stack = [program mutableCopy]; 
+        for (NSUInteger i = 0 ; i < [stack count] ; i++) 
+        {   
+            // loop through all the objects
+            id programObject = [stack objectAtIndex:i]; 
+            // check if the object we have is variable
+            if ( [programObject isKindOfClass:[NSString class]]  &&  (![self isOperation:programObject]) )
+            {
+                id value = [variableValues objectForKey:programObject]; 
+                if (![value isKindOfClass:[NSNumber class]]) 
+                {
+                    // set the value to 0 if value is not a NSNumber 
+                    value = 0 ;  
+                }
+                [stack replaceObjectAtIndex:i withObject:value]; 
+            }   
+        }
+        return  [self popOperandOffProgramStack:stack] ;
+    }
+    else 
+    {
+        return  0 ;
+    }
+}
+
 + (double)runProgram:(id)program
 {
-    NSMutableArray *stack;
-    if ([program isKindOfClass:[NSArray class]]) {
-        stack = [program mutableCopy];
-    }    return [self popOperandOffProgramStack:stack];
+    return [self runProgram:program usingVariableValues:nil];
 }
 
 
