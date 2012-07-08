@@ -91,6 +91,27 @@
     return result ;
 }
 
++ (NSSet *)variablesUsedInProgram:(id)program { 
+    
+    // Ensure program is an NSArray
+    if (![program isKindOfClass:[NSArray class]]) return nil;
+    
+    NSMutableSet *variablesUsed = [NSMutableSet set];
+    
+    // For each item in the program
+    for (id programObject in program) {
+        // If we think it's a variable add it to the variables set
+        if ([programObject isKindOfClass:[NSString class]] && ![self isOperation:programObject]) {
+            [variablesUsed addObject:programObject];    
+        }
+    }  
+    // Return nil if we don't use any variables
+    if ([variablesUsed count] == 0) 
+        return nil; 
+    else 
+        return [variablesUsed copy];
+}
+
 + (BOOL)isOperation:(NSString *)operation {
     // Create a set of operations used
     NSSet *setOfOperations = [NSSet setWithObjects: @"+", @"-", @"*", @"/", @"sin", 
