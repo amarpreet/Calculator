@@ -59,7 +59,8 @@
 {
     [self.brain pushOperand:[self.display.text doubleValue]]; 
     self.userIsInMiddleOfEntringNumber = NO ; 
-    NSLog(@"user touched enter on %g",[self.display.text doubleValue]); 
+    NSLog(@"user touched enter on %g",[self.display.text doubleValue]);
+    NSLog(@"operand stack right now : %@" , self.brain); 
 }
 
 - (IBAction)operationPressed:(UIButton *)sender 
@@ -71,6 +72,8 @@
     double result = [self.brain performOperation:operation];
     self.display.text = [NSString stringWithFormat:@"%g" , result ]; 
     NSLog(@"user touched operation %@" , sender.currentTitle);
+    NSLog(@"operand stack right now : %@" , self.brain); 
+
 }
 
 
