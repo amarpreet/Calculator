@@ -69,6 +69,7 @@
         if(divisor) result = [self popOperand] / divisor ; 
     }
     
+    [self pushOperand:result]; // push the operand back on to the stack 
     return  result ; 
 }
 
