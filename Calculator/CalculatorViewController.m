@@ -121,6 +121,7 @@
     [self updateSentToBrainLabelwith:operation]; 
     [self updateSentToBrainLabelwith:@"="];
     double result = [self.brain performOperation:operation];
+    [[self.brain class] descriptionOfProgram:self.brain.program]; 
     self.display.text = [NSString stringWithFormat:@"%g" , result ]; 
     NSLog(@"user touched operation %@" , sender.currentTitle);
     NSLog(@"operand stack right now : %@" , self.brain); 
@@ -145,6 +146,7 @@
     [self.brain clearStack]; 
     self.sentToBrain.text = [NSString stringWithFormat:@""];
     self.display.text = [NSString stringWithFormat:@"0"];
+    self.userIsInMiddleOfEntringNumber = YES ; 
     NSLog(@"everything cleared"); 
 }
 

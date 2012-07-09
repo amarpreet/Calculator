@@ -31,9 +31,65 @@
     return [self.programStack copy];
 }
 
++ (BOOL)isOperation:(NSString *)operation {
+    // Create a set of operations used
+    NSSet *setOfOperations = [NSSet setWithObjects: @"+", @"-", @"*", @"/", @"sin", 
+                              @"cos", @"sqrt", @"π", @"+/-", nil];
+    
+    return [setOfOperations containsObject:operation];
+}
+
+
++ (BOOL)isSingleOperandOperation:(NSString *)operation 
+{
+    NSSet *setOfOperations = [NSSet setWithObjects:@"sin", @"cos", @"sqrt", nil];
+    return [setOfOperations containsObject:operation];
+}
+
+
++ (NSString *)createHumanReadableForm:(NSMutableArray *)stack 
+{
+    NSString *descriptionForHumans ;
+    
+    id topOfStack = [stack lastObject]; 
+    if(topOfStack) [stack removeLastObject]; 
+    
+    if ([topOfStack isKindOfClass:[NSNumber class]]) 
+    {
+        descriptionForHumans = [NSString stringWithFormat:@"%@" ,topOfStack]; 
+    }
+    else if ([topOfStack isKindOfClass:[NSString class]] && [self isOperation:topOfStack] )  
+    {
+        if ([self isSingleOperandOperation:topOfStack]) {
+            descriptionForHumans = [NSString stringWithFormat:@"%@(%@)" , topOfStack ,[self createHumanReadableForm:stack] ]; 
+                                    
+        }else if (![self isSingleOperandOperation:topOfStack]) 
+        {
+            NSString * second = [NSString stringWithFormat:@"%@" , [self createHumanReadableForm:stack] ]; 
+            NSNumber * first  = [NSString stringWithFormat:@"%@",[self createHumanReadableForm:stack]] ;
+            if ([topOfStack isEqualToString:@"+"] || [topOfStack isEqualToString:@"-" ]) {
+                descriptionForHumans = [NSString stringWithFormat:@"%(@ %@ %@)" , first , topOfStack , second]; 
+            }else
+            {
+                descriptionForHumans = [NSString stringWithFormat:@"%@ %@ %@" , first , topOfStack ,second ];
+            }
+        }else {
+            descriptionForHumans = topOfStack ;
+        }
+    }
+    NSLog(@"human readable from : %@" , descriptionForHumans ); 
+     
+    return descriptionForHumans ;
+}
+
 + (NSString *)descriptionOfProgram:(id)program
 {
-    return @"Implement this in Homework #2";
+    NSMutableArray * stack ; 
+    if ([program isKindOfClass:[NSArray class]])
+    {
+        stack = [program  mutableCopy];
+    }
+    return [self createHumanReadableForm:stack];
 }
 
 - (void)pushOperand:(double)operand 
@@ -114,15 +170,6 @@
     else 
         return [variablesUsed copy];
 }
-
-+ (BOOL)isOperation:(NSString *)operation {
-    // Create a set of operations used
-    NSSet *setOfOperations = [NSSet setWithObjects: @"+", @"-", @"*", @"/", @"sin", 
-                           @"cos", @"sqrt", @"π", @"+/-", nil];
-    
-    return [setOfOperations containsObject:operation];
-}
-
 
 + (double)runProgram:(id)program usingVariableValues:(NSDictionary *)variableValues 
 {
